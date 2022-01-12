@@ -10,7 +10,7 @@ function CurrentUser() {
 	return (
 		<>
 			<h1>Books Shop App</h1>
-			<p>{currentUser.email}</p>
+			<p>Welcome {currentUser.email}</p>
 		</>
 	)
 }
