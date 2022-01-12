@@ -2,7 +2,8 @@ import React from 'react'
 import { render } from 'react-dom'
 
 import { GlobalStyles } from 'twin.macro'
-import { BrowserRouter } from 'react-router-dom'
+import { Router } from 'react-router-dom'
+import { createBrowserHistory } from 'history'
 
 import { ApolloProvider } from '@apollo/client'
 import { client } from './apolloClient'
@@ -10,14 +11,16 @@ import { client } from './apolloClient'
 import App from './App'
 import './index.css'
 
+export const history = createBrowserHistory()
+
 render(
 	<React.StrictMode>
 		<GlobalStyles />
-		<BrowserRouter>
-			<ApolloProvider client={client}>
+		<ApolloProvider client={client}>
+			<Router history={history}>
 				<App />
-			</ApolloProvider>
-		</BrowserRouter>
+			</Router>
+		</ApolloProvider>
 	</React.StrictMode>,
 	document.getElementById('root')
 )

@@ -3,12 +3,7 @@ import { onError } from '@apollo/client/link/error'
 
 const AuthErrorLink = onError(
 	({ graphQLErrors, networkError, operation, forward }) => {
-		if (
-			graphQLErrors?.some((err) =>
-				['UNAUTHENTICATED', 'FORBIDDEN'].includes(
-					err.extensions.code as string
-				)
-			)
+		if (graphQLErrors?.some((err) => ['UNAUTHENTICATED', 'FORBIDDEN'].includes(err.extensions.code as string))
 		) {
 			console.error('Auth Error')
 		}
