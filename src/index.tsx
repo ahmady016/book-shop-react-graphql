@@ -10,6 +10,8 @@ import { client } from './apolloClient'
 import { ChakraProvider } from '@chakra-ui/react'
 
 import App from './App'
+
+import 'react-toastify/dist/ReactToastify.css'
 import './index.css'
 
 export const history = createBrowserHistory()
