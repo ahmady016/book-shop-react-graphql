@@ -1,11 +1,29 @@
 import { ApolloClient, InMemoryCache, HttpLink, from } from '@apollo/client'
 import { onError } from '@apollo/client/link/error'
 
+import { useRefreshMutation } from './__graphql/users'
+import { history } from './index'
+
 const AuthErrorLink = onError(
 	({ graphQLErrors, networkError, operation, forward }) => {
-		if (graphQLErrors?.some((err) => ['UNAUTHENTICATED', 'FORBIDDEN'].includes(err.extensions.code as string))
+		if (
+			graphQLErrors?.some((err) => ['UNAUTHENTICATED', 'FORBIDDEN'].includes(err.extensions.code as string))
+			&& operation.operationName !== 'Refresh'
 		) {
-			console.error('Auth Error')
+			console.error(`Auth Error in ${operation.operationName}`)
+			let isTokensRefreshed = false
+			useRefreshMutation()
+				.then(_ => {
+					isTokensRefreshed = true
+				})
+				.catch((err) => {
+					console.log('🚀: Refresh Tokens Error', err)
+					history.push('/admin/signin')
+				})
+
+			if(isTokensRefreshed) {
+				return forward(operation)
+			}
 		}
 	}
 )
@@ -16,4 +34,5 @@ export const cache = new InMemoryCache()
 export const client = new ApolloClient({
 	link: from([AuthErrorLink, httpLink]),
 	cache,
+	credentials: 'include'
 })

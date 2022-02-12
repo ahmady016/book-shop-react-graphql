@@ -1,0 +1,8 @@
+schema: 'schema.gql'
+documents: 'src/__graphql/*.ts'
+overwrite: true
+generates:
+   src/__generated/graphql.types.ts:
+      plugins:
+         - '@graphql-codegen/typescript'
+         - '@graphql-codegen/typescript-operations'

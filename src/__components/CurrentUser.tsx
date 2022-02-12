@@ -1,17 +1,11 @@
-import React from 'react'
-
 import { useCurrentUserQuery } from '../__graphql/users'
 
 function CurrentUser() {
-	const { currentUserLoading, currentUserError, currentUser } =
-		useCurrentUserQuery()
-	if (currentUserLoading) return <p>Loading...</p>
-	if (currentUserError) return <p>{`Error! ${currentUserError.message}`}</p>
+	const { loading, error, data } = useCurrentUserQuery()
+	if (loading) return <p>Loading...</p>
+	if (error) return <p>{`Error! ${error.message}`}</p>
 	return (
-		<>
-			<h1>Books Shop App</h1>
-			<p>Welcome {currentUser.email}</p>
-		</>
+		<p>Welcome {data?.currentUser.email}</p>
 	)
 }
 
